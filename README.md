@@ -13,5 +13,9 @@ The following are the sections available in this guide.
 - [Observability](#observability)
 
 ## What you’ll build
-When it comes to the data communication, the major challenge is formats of storage mechanisms vary among the systems. Also the message producers and consumers uses different techniques according to their requirement. So message transformation play important role to coupling those message producers and the message consumers. 
+When it comes to the data communication, the major challenge is formats of storage mechanisms vary among the systems. 
+
+![alt text](images/messagetransformation.png)
+
+Also the message producers and consumers uses different techniques according to their requirement. So message transformation play important role to coupling those message producers and the message consumers. 
 Not only that, the performance impact while message transformation is also important fact in the real world. Here we discuss about main three message transformation patterns in Enterprise Integration as content filter, content enricher and claim check.
