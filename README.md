@@ -44,3 +44,19 @@ The ultimate goal of the claim check EIP in our scenario is to validate the stud
 ### Sample scenario
 The sample scenario used to demonstrate the above three EI Patterens. Student send a request with content student ID, student name, Student's city and gender. Then ‘content filter’ filters the student name, student's city and gender from the request and added them to a students details database. Filtered request contains only the student ID. Then filtered request goes to the 'Student ID validator'. It validates the incomming request and send the validated request. Then validated request goes to the 'content enricher'. Content enricer uses used two databases as student's results details and student's personal details.
 Using student's ID, it maps the details which belogs to a particular student from the tables and added particular data to the request. While addding the enriching data, it process the data using json to json transformation. The output request of the scenario contains student ID, student name, Student's city, gender and student's results details.
+
+
+
+## Prerequisites
+ 
+- [Ballerina Distribution](https://ballerina.io/learn/getting-started/)
+- A Text Editor or an IDE 
+
+### Optional Requirements
+- Ballerina IDE plugins ([IntelliJ IDEA](https://plugins.jetbrains.com/plugin/9520-ballerina), [VSCode](https://marketplace.visualstudio.com/items?itemName=WSO2.Ballerina), [Atom](https://atom.io/packages/language-ballerina))
+- [Docker](https://docs.docker.com/engine/installation/)
+- [Kubernetes](https://kubernetes.io/docs/setup/)
+
+## Implementation
+
+
