@@ -28,6 +28,7 @@ The content filter EIP (Enterprise Integration Pattern) important when we need t
 ### Content enricher
 The Content Enricher EIP facilitates communication with another system if the message originator does not have all the required data items available. It accesses an external data source to augment a message with missing information.
 
+![alt text](images/contentenricher.png)
 
 ### Claim check
 The Claim Check EIP reduces the data volume of messages sent across a system without sacrificing information content. It stores the entire message at the initial stage of a sequence of processing steps, and it extracts only the parts required by the following steps. Once processing is completed, it retrieves the stored message and performs any operations. This pattern ensures better performance, since large chunks of unwanted data are reduced to lightweight bits before being processed.
