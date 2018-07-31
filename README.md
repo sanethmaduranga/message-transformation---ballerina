@@ -25,12 +25,20 @@ The content filter EIP (Enterprise Integration Pattern) important when we need t
 
 ![alt text](images/contentfilter.png)
 
+In our sample scenario, input request contains lot of student's details. So content filter uses to simplify the input request such as request contains only student ID. Additional data such as student name, student's city and gender will be dropped to ensure the perfomance of messsage transformation.
+
 ### Content enricher
 The Content Enricher EIP facilitates communication with another system if the message originator does not have all the required data items available. It accesses an external data source to augment a message with missing information.
 
 ![alt text](images/content_enricher.png)
 
+Content enricher EIP uses to enrich the requst data, in our example it is used to enrich the student's details. We used two databases for student's results details and student's personal details. Using student's ID, it maps the details which belogs to a particular student from the tables and send those to the enricher. Then enricher added particular data to the request.
+
 ### Claim check
 The Claim Check EIP reduces the data volume of messages sent across a system without sacrificing information content. It stores the entire message at the initial stage of a sequence of processing steps, and it extracts only the parts required by the following steps. Once processing is completed, it retrieves the stored message and performs any operations. This pattern ensures better performance, since large chunks of unwanted data are reduced to lightweight bits before being processed.
 
 ![alt text](images/claim_check.png)
+
+The ultimate goal of the claim check EIP in our scenario is to validate the student's ID. Check luggage used to send unwanted data which not uses in validation process, to ths student's detail database. After the validation of student's ID, the original data will addded to the request again.
+
+
