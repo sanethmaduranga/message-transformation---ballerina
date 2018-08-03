@@ -524,3 +524,31 @@ To run the unit tests, navigate to `message-transformation---ballerina/guide` an
 ```bash
    $ ballerina test
 ```
+## Deployment
+
+After the development process, you can deploy the services using below methods by selecting as you wish.
+
+### Deploying locally
+
+As the first step, you can build Ballerina executable archives (.balx) of the services that you developed above. Navigate to `message-transformation---ballerina/guide` and run the following command.
+
+```bash
+   $ ballerina build
+```
+
+Once the .balx files are created inside the target folder, you can run them using the following command. 
+
+```bash
+   $ ballerina run target/message_transformation.balx
+```
+
+The successful execution of a service will show us something similar to the following output.
+
+```
+   ballerina: initiating service(s) in 'target/message_transformation.balx'
+   
+```
+
+### Deploying on Docker
+
+You can run the service that we developed above as a Docker container.
