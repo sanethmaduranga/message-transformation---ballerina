@@ -33,7 +33,8 @@ INSERT INTO StudentDetails(ID, Com_Maths, Physics, Chemistry) values (105, 'A', 
 INSERT INTO StudentDetails(ID, Com_Maths, Physics, Chemistry) values (106, 'A', 'C', 'A');
 INSERT INTO StudentDetails(ID, Com_Maths, Physics, Chemistry) values (107, 'A', 'C', 'B');
 INSERT INTO StudentDetails(ID, Com_Maths, Physics, Chemistry) values (108, 'A', 'C', 'C');
-
+INSERT INTO StudentDetails(ID, Com_Maths, Physics, Chemistry) values (109, 'B', 'C', 'B');
+INSERT INTO StudentDetails(ID, Com_Maths, Physics, Chemistry) values (110, 'C', 'C', 'C');
 
 
 
