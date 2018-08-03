@@ -3,17 +3,8 @@ import ballerina/log;
 import ballerina/mime;
 import ballerina/io;
 import ballerina/mysql;
-
-//define endpoints for services
-endpoint http:Client validatorEP {
-    url: "http://localhost:9094/validator"
-};
-endpoint http:Client enricherEP {
-    url: "http://localhost:9092/enricher"
-};
-endpoint http:Client clientEP {
-    url: "http://localhost:9093/backend"
-};
+//import ballerinax/docker;
+//import ballerinax/kubernetes;
 
 //connect the student details table
 endpoint mysql:Client testDB {
@@ -25,7 +16,6 @@ endpoint mysql:Client testDB {
     poolOptions: { maximumPoolSize: 5 },
     dbOptions: { useSSL: false }
 };
-
 //connect the student's results details table
 endpoint mysql:Client testDB1 {
     host: "localhost",
@@ -37,12 +27,78 @@ endpoint mysql:Client testDB1 {
     dbOptions: { useSSL: false }
 };
 
+//@kubernetes:Ingress {
+//    hostname:"ballerina.guides.io",
+//    name:"message_transformation",
+//    path:"/"
+//}
+//@kubernetes:Service {
+//    serviceType:"NodePort",
+//    name:"contentfilter"
+//}
+//@kubernetes:Service {
+//    serviceType:"NodePort",
+//    name:"validator"
+//}
+//@kubernetes:Service {
+//    serviceType:"NodePort",
+//    name:"enricher"
+//}
+//@kubernetes:Service {
+//    serviceType:"NodePort",
+//    name:"backend"
+//}
+//@kubernetes:Deployment {
+//    image:"ballerina.guides.io/message_transformation_service:v1.0",
+//    name:"ballerina-guides-message-transformation-service",
+//    baseImage:"ballerina/ballerina-platform:0.980.0",
+//    copyFiles:[{target:"/ballerina/runtime/bre/lib",
+//        source:"/home/saneth/Documents/ballerina/mysql-connector-java-5.1.46.jar"}]
+//}
+
+//@docker:Config {
+//    registry:"ballerina.guides.io",
+//    name:"message_transformation",
+//    tag:"v1.0",
+//    baseImage:"ballerina/ballerina-platform:0.980.0"
+//}
+//@docker:CopyFiles {
+//    files:[{source:"/home/saneth/Documents/ballerina/mysql-connector-java-5.1.46.jar",
+//        target:"/ballerina/runtime/bre/lib"}]
+//}
+//
+//@docker:Expose {}
+endpoint http:Listener contentfilterEP {
+    port:9090
+};
+endpoint http:Listener claimvaditadeEP {
+    port:9094
+};
+endpoint http:Listener contentenricherEP {
+    port:9092
+};
+endpoint http:Listener backendEP {
+    port:9093
+};
+//define endpoints for services
+endpoint http:Client validatorEP {
+    url: "http://localhost:9094/validator"
+};
+endpoint http:Client enricherEP {
+    url: "http://localhost:9092/enricher"
+};
+endpoint http:Client clientEP {
+    url: "http://localhost:9093/backend"
+};
+
+
+
 //define the global variables
 public json payload1;
 public json payload2;
 
 //service for the content filter pattern
-service<http:Service> contentfilter bind { port: 9090 } {
+service<http:Service> contentfilter bind contentfilterEP {
     @http:ResourceConfig {
         methods: ["POST"],
         path: "/"
@@ -130,7 +186,7 @@ service<http:Service> contentfilter bind { port: 9090 } {
 }
 
 //the student ID validator service
-service<http:Service> validator bind { port: 9094 } {
+service<http:Service> validator bind claimvaditadeEP {
     @http:ResourceConfig {
         methods: ["POST"],
         path: "/"
@@ -185,7 +241,7 @@ service<http:Service> validator bind { port: 9094 } {
 }
 
 //The content enricher service
-service<http:Service> enricher bind { port: 9092 } {
+service<http:Service> enricher bind contentenricherEP {
     @http:ResourceConfig {
         methods: ["POST"],
         path: "/"
@@ -277,7 +333,7 @@ service<http:Service> enricher bind { port: 9092 } {
 }
 
 //client endpoint service to display the request payload
-service<http:Service> backend bind { port: 9093 } {
+service<http:Service> backend bind backendEP {
     @http:ResourceConfig {
         methods: ["POST"],
         path: "/"
@@ -290,6 +346,11 @@ service<http:Service> backend bind { port: 9093 } {
                 //send payload as response
                 http:Response res = new;
                 res.setJsonPayload(untaint msg);
+
+                //res.setPayload("Your details will result as log message......");
+                //io:println("Your request payload is below");
+                //io:println(untaint msg);
+
                 caller->respond(res) but { error e =>
                 log:printError("Error sending response", err = e) };
             }
