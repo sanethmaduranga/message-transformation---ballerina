@@ -844,4 +844,80 @@ service<http:Service> backend bind backendEP {
 .
 }
 ```
+- Here we have used ``  @kubernetes:Deployment `` to specify the docker image name which will be created as part of building this service. `copyFiles` field is used to copy the MySQL jar file into the ballerina bre/lib folder. Make sure to replace the `<path_to_JDBC_jar>` with your JDBC jar's path.
+- Please note that if you are using minikube it is required to add the `` dockerHost `` and `` dockerCertPath `` configurations under ``  @kubernetes:Deployment ``.
+eg:
+``` ballerina
+@kubernetes:Deployment {
+    image:"ballerina.guides.io/message_transformation_service:v1.0",
+    name:"ballerina-guides-message-transformation-service",
+    baseImage:"ballerina/ballerina-platform:0.980.0",
+    copyFiles:[{target:"/ballerina/runtime/bre/lib",
+        source:<path_to_JDBC_jar>}]
+    dockerHost:"tcp://<MINIKUBE_IP>:<DOCKER_PORT>",
+    dockerCertPath:"<MINIKUBE_CERT_PATH>"
+}
+```
 
+- We have also specified `` @kubernetes:Service `` so that it will create a Kubernetes service which will expose the Ballerina service that is running on a Pod.  
+- In addition we have used `` @kubernetes:Ingress `` which is the external interface to access your service (with path `` /`` and host name ``ballerina.guides.io``)
+
+- Now you can build a Ballerina executable archive (.balx) of the service that we developed above, using the following command. It points to the service file that we developed above and it will create an executable binary out of that. 
+This will also create the corresponding docker image and the Kubernetes artifacts using the Kubernetes annotations that you have configured above.
+  
+```
+   $ballerina build message_transformation
+
+   Compiling source
+       message_transformation.bal
+
+   Generating executable
+       ./target/message_transformation.balx
+           @kubernetes:Service                      - complete 1/1
+           @kubernetes:Ingress                      - complete 1/1
+           @kubernetes:Deployment                   - complete 1/1
+           @kubernetes:Docker                       - complete 3/3 
+
+           Run following command to deploy kubernetes artifacts: 
+           kubectl apply -f ./target/message_transformation/kubernetes/
+```
+
+- You can verify that the docker image that we specified in `` @kubernetes:Deployment `` is created, by using `` docker images ``. 
+- Also the Kubernetes artifacts related our service, will be generated in `` ./target/message_transformation/kubernetes``. 
+- Now you can create the Kubernetes deployment using:
+
+```
+   $kubectl apply -f ./target/message_transformation/kubernetes 
+
+```
+
+- You can verify Kubernetes deployment, service and ingress are running properly, by using following Kubernetes commands. 
+
+```
+   $kubectl get service
+   $kubectl get deploy
+   $kubectl get pods
+   $kubectl get ingress
+```
+
+- If everything is successfully deployed, you can invoke the service either via Node port or ingress. 
+
+Node Port:
+ 
+```
+   curl -v http://localhost:9090/contentfilter -d '{"id" : 105, "name" : "ballerinauser", "city" : "Colombo 03", "gender" : "male"}' -H "Content-Type:application/json" -X POST 
+```
+
+Ingress:
+
+Add `/etc/hosts` entry to match hostname. 
+
+``` 
+   127.0.0.1 ballerina.guides.io
+```
+
+Access the service 
+
+``` 
+    curl -v http://localhost:9090/contentfilter -d '{"id" : 105, "name" : "ballerinauser", "city" : "Colombo 03", "gender" : "male"}' -H "Content-Type:application/json" -X POST
+```
