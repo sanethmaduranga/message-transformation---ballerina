@@ -591,7 +591,6 @@ import ballerina/mime;
 import ballerina/io;
 import ballerina/mysql;
 import ballerinax/docker;
-
 //connect the student details table
 endpoint mysql:Client testDB {
     host: <MySQL_Container_IP>,
@@ -647,9 +646,6 @@ endpoint http:Client enricherEP {
 endpoint http:Client clientEP {
     url: "http://localhost:9093/backend"
 };
-
-
-
 //define the global variables
 public json payload1;
 public json payload2;
@@ -675,3 +671,43 @@ service<http:Service> backend bind backendEP {
 .
 }
 ```
+
+ - `@docker:Config` annotation is used to provide the basic docker image configurations for the sample. `@docker:CopyFiles` is used to copy the MySQL jar file into the ballerina bre/lib folder. Make sure to replace the `<path_to_JDBC_jar>` with your JDBC jar's path. `@docker:Expose {}` is used to expose the port. Finally you need to change the host field in the  `mysql:Client` endpoint definition to the IP address of the MySQL container. You can obtain this IP address using the below command.
+
+```
+   $docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <Container_ID>
+```
+
+ - Now you can build a Ballerina executable archive (.balx) of the service that we developed above, using the following command. It points to the service file that we developed above and it will create an executable binary out of that. 
+This will also create the corresponding docker image using the docker annotations that you have configured above. Navigate to the `message-transformation---ballerina/guide/` folder and run the following command.
+
+```
+Compiling source
+    message_transformation.bal
+
+Generating executable
+    ./target/message_transformation.balx
+        @docker                  - complete 3/3 
+
+        Run following command to start docker container:
+        docker run -d -p 9090:9090 ballerina.guides.io/message_transformation:v1.0
+```
+
+- Once you successfully build the docker image, you can run it with the `` docker run`` command that is shown in the previous step.  
+
+```   
+   $docker run -d -p 9090:9090 ballerina.guides.io/message_transformation:v1.0
+```
+
+- Here we run the docker image with flag`` -p <host_port>:<container_port>`` so that we use the host port 9090 and the container port 9090. Therefore you can access the service through the host port. 
+
+- Verify docker container is running with the use of `` $ docker ps``. The status of the docker container should be shown as 'Up'. 
+
+- You can access the service using the same curl commands that we've used above. 
+ 
+```
+  $curl -v http://localhost:9090/contentfilter -d '{"id" : 105, "name" : "ballerinauser", "city" : "Colombo 03", "gender" :    "male"}' -H "Content-Type:application/json" -X POST
+```
+
+### Deploying on Kubernetes
+
