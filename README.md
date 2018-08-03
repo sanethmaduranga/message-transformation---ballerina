@@ -708,7 +708,7 @@ Generating executable
 - You can access the service using the same curl commands that we've used above. 
  
 ```
-  $curl -v http://localhost:9090/contentfilter -d '{"id" : 105, "name" : "ballerinauser", "city" : "Colombo 03", "gender" :    "male"}' -H "Content-Type:application/json" -X POST
+curl -v http://localhost:9090/contentfilter -d '{"id" : 105, "name" : "ballerinauser", "city" : "Colombo 03", "gender" :    "male"}' -H "Content-Type:application/json" -X POST
 ```
 
 ### Deploying on Kubernetes
