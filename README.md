@@ -147,6 +147,18 @@ import ballerina/mime;
 import ballerina/io;
 import ballerina/mysql;
 
+endpoint http:Listener contentfilterEP {
+    port:9090
+};
+endpoint http:Listener claimvaditadeEP {
+    port:9094
+};
+endpoint http:Listener contentenricherEP {
+    port:9092
+};
+endpoint http:Listener backendEP {
+    port:9093
+};
 //define endpoints for services
 endpoint http:Client validatorEP {
     url: "http://localhost:9094/validator"
@@ -185,7 +197,7 @@ public json payload1;
 public json payload2;
 
 //service for the content filter pattern
-service<http:Service> contentfilter bind { port: 9090 } {
+service<http:Service> contentfilter bind contentfilterEP {
     @http:ResourceConfig {
         methods: ["POST"],
         path: "/"
@@ -273,7 +285,7 @@ service<http:Service> contentfilter bind { port: 9090 } {
 }
 
 //the student ID validator service
-service<http:Service> validator bind { port: 9094 } {
+service<http:Service> validator bind claimvaditadeEP {
     @http:ResourceConfig {
         methods: ["POST"],
         path: "/"
@@ -328,7 +340,7 @@ service<http:Service> validator bind { port: 9094 } {
 }
 
 //The content enricher service
-service<http:Service> enricher bind { port: 9092 } {
+service<http:Service> enricher bind contentenricherEP {
     @http:ResourceConfig {
         methods: ["POST"],
         path: "/"
@@ -420,7 +432,7 @@ service<http:Service> enricher bind { port: 9092 } {
 }
 
 //client endpoint service to display the request payload
-service<http:Service> backend bind { port: 9093 } {
+service<http:Service> backend bind backendEP {
     @http:ResourceConfig {
         methods: ["POST"],
         path: "/"
