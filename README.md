@@ -551,4 +551,127 @@ The successful execution of a service will show us something similar to the foll
 
 ### Deploying on Docker
 
-You can run the service that we developed above as a Docker container.
+You can run the service that we developed above as a docker container. As Ballerina platform includes [Ballerina_Docker_Extension](https://github.com/ballerinax/docker), which offers native support for running ballerina programs on containers, you just need to put the corresponding docker annotations on your service code. Since this guide requires MySQL as a prerequisite, you need a couple of more steps to configure MySQL in docker container.   
+
+First let's see how to configure MySQL in docker container.
+
+  * Initially, you need to pull the MySQL docker image using the below command.
+```
+    $docker pull mysql:5.7.22
+```
+
+  * Then run the MySQL as root user with container name `docker_mysql` and password being `root` to easily follow this guide. 
+```
+    $docker run --name docker_mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:5.7.22
+```
+
+  * Check whether the MySQL container is up and running using the following command.
+```
+    $docker ps
+```
+
+  * Navigate to the sample root directory and run the below command to copy the database script file to the MySQL Docker container, which will be used to create the required database.
+```
+    $docker cp ./resources/Initialize.sql <CONTAINER_ID>:/
+```
+
+  * Run the SQL script file in the container to create the required database using the below command.
+```
+    $docker exec <CONTAINER_ID> /bin/sh -c 'mysql -u root -proot </initializeDataBase.sql'    
+```
+
+Now let's add the required docker annotations in our employee_db_service. You need to import  `` ballerinax/docker; `` and add the docker annotations as shown below to enable docker image generation during the build time. 
+
+##### message_transformation.bal
+
+```ballerina
+import ballerina/http;
+import ballerina/log;
+import ballerina/mime;
+import ballerina/io;
+import ballerina/mysql;
+import ballerinax/docker;
+
+//connect the student details table
+endpoint mysql:Client testDB {
+    host: <MySQL_Container_IP>,
+    port: 3306,
+    name: "testdb",
+    username: "root",
+    password: "root",
+    poolOptions: { maximumPoolSize: 5 },
+    dbOptions: { useSSL: false }
+};
+//connect the student's results details table
+endpoint mysql:Client testDB1 {
+    host: <MySQL_Container_IP>,
+    port: 3306,
+    name: "testdb1",
+    username: "root",
+    password: "root",
+    poolOptions: { maximumPoolSize: 5 },
+    dbOptions: { useSSL: false }
+};
+
+@docker:Config {
+    registry:"ballerina.guides.io",
+    name:"message_transformation",
+    tag:"v1.0",
+    baseImage:"ballerina/ballerina-platform:0.980.0"
+}
+@docker:CopyFiles {
+    files:[{source:<path_to_JDBC_jar>,
+            target:"/ballerina/runtime/bre/lib"}]
+}
+
+@docker:Expose {}
+endpoint http:Listener contentfilterEP {
+    port:9090
+};
+endpoint http:Listener claimvaditadeEP {
+    port:9094
+};
+endpoint http:Listener contentenricherEP {
+    port:9092
+};
+endpoint http:Listener backendEP {
+    port:9093
+};
+//define endpoints for services
+endpoint http:Client validatorEP {
+    url: "http://localhost:9094/validator"
+};
+endpoint http:Client enricherEP {
+    url: "http://localhost:9092/enricher"
+};
+endpoint http:Client clientEP {
+    url: "http://localhost:9093/backend"
+};
+
+
+
+//define the global variables
+public json payload1;
+public json payload2;
+
+//service for the content filter pattern
+service<http:Service> contentfilter bind contentfilterEP {
+.
+.
+}
+//the student ID validator service
+service<http:Service> validator bind claimvaditadeEP {
+.
+.
+}
+//The content enricher service
+service<http:Service> enricher bind contentenricherEP {
+.
+.
+}
+//client endpoint service to display the request payload
+service<http:Service> backend bind backendEP {
+.
+.
+}
+```
