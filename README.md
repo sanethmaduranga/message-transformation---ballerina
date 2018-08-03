@@ -129,7 +129,13 @@ In the below service. it added student's data through the request. But student's
 
 To implement the scenario, let's start by implementing the message_transformation.bal file, which is the main file in the implementation. This file includes 4 main services as contentfilter, validator, enricher and backend. Refer to the code attached below. Inline comments are added for better understanding.
 
-> In the below service, mysql username is used as "root" and password is used as "wso2123".
+> In the below service you have to change below configurations according to your mysql configuration details, 
+>```
+>   host: "localhost",
+>   port: 3306,
+>   username: "root",
+>   password: "wso2123",
+>```
 
 ##### passthrough.bal
 
@@ -451,3 +457,13 @@ function handleUpdate(int|error returned, string message) {
 ```
 
 ## Testing 
+
+
+### Before you begin
+* Run the SQL script `initialize.sql` provided in the resources folder, to initialize the databases and to create the required tables.
+```
+   $mysql -u <username> -p <file location>/initialize.sql 
+``` 
+NOTE : You can find the SQL script(`initialize.sql`) [here](resources/initialize.sql)
+
+
