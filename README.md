@@ -739,4 +739,109 @@ Now we need to import `` ballerinax/kubernetes; `` and use `` @kubernetes `` ann
 ##### employee_db_service.bal
 
 ```ballerina
+import ballerina/http;
+import ballerina/log;
+import ballerina/mime;
+import ballerina/io;
+import ballerina/mysql;
+import ballerinax/kubernetes;
+
+//connect the student details table
+endpoint mysql:Client testDB {
+    host: "mysql-service",
+    port: 3306,
+    name: "testdb",
+    username: "root",
+    password: "root",
+    poolOptions: { maximumPoolSize: 5 },
+    dbOptions: { useSSL: false }
+};
+//connect the student's results details table
+endpoint mysql:Client testDB1 {
+    host: "mysql-service",
+    port: 3306,
+    name: "testdb1",
+    username: "root",
+    password: "root",
+    poolOptions: { maximumPoolSize: 5 },
+    dbOptions: { useSSL: false }
+};
+
+@kubernetes:Ingress {
+    hostname:"ballerina.guides.io",
+    name:"message_transformation",
+    path:"/"
+}
+@kubernetes:Service {
+    serviceType:"NodePort",
+    name:"contentfilter"
+}
+@kubernetes:Service {
+    serviceType:"NodePort",
+    name:"validator"
+}
+@kubernetes:Service {
+    serviceType:"NodePort",
+    name:"enricher"
+}
+@kubernetes:Service {
+    serviceType:"NodePort",
+    name:"backend"
+}
+@kubernetes:Deployment {
+    image:"ballerina.guides.io/message_transformation_service:v1.0",
+    name:"ballerina-guides-message-transformation-service",
+    baseImage:"ballerina/ballerina-platform:0.980.0",
+    copyFiles:[{target:"/ballerina/runtime/bre/lib",
+        source:<path_to_JDBC_jar>}]
+}
+
+endpoint http:Listener contentfilterEP {
+    port:9090
+};
+endpoint http:Listener claimvaditadeEP {
+    port:9094
+};
+endpoint http:Listener contentenricherEP {
+    port:9092
+};
+endpoint http:Listener backendEP {
+    port:9093
+};
+//define endpoints for services
+endpoint http:Client validatorEP {
+    url: "http://localhost:9094/validator"
+};
+endpoint http:Client enricherEP {
+    url: "http://localhost:9092/enricher"
+};
+endpoint http:Client clientEP {
+    url: "http://localhost:9093/backend"
+};
+
+//define the global variables
+public json payload1;
+public json payload2;
+
+//service for the content filter pattern
+service<http:Service> contentfilter bind contentfilterEP {
+.
+.
+}
+//the student ID validator service
+service<http:Service> validator bind claimvaditadeEP {
+.
+.
+}
+//The content enricher service
+service<http:Service> enricher bind contentenricherEP {
+.
+.
+}
+//client endpoint service to display the request payload
+service<http:Service> backend bind backendEP {
+.
+.
+}
+```
 
