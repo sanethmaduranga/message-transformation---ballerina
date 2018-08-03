@@ -577,7 +577,7 @@ First let's see how to configure MySQL in docker container.
 
   * Run the SQL script file in the container to create the required database using the below command.
 ```
-    $docker exec <CONTAINER_ID> /bin/sh -c 'mysql -u root -proot </initializeDataBase.sql'    
+    $docker exec <CONTAINER_ID> /bin/sh -c 'mysql -u root -proot </Initialize.sql'    
 ```
 
 Now let's add the required docker annotations in our employee_db_service. You need to import  `` ballerinax/docker; `` and add the docker annotations as shown below to enable docker image generation during the build time. 
@@ -682,6 +682,8 @@ service<http:Service> backend bind backendEP {
 This will also create the corresponding docker image using the docker annotations that you have configured above. Navigate to the `message-transformation---ballerina/guide/` folder and run the following command.
 
 ```
+   $ballerina build message_transformation
+   
 Compiling source
     message_transformation.bal
 
