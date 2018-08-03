@@ -1,7 +1,7 @@
 # message-transformation---ballerina
 There are different ways of message transformation methods in EIP (Enterprise Integration Patterns). In this guide, we are focusing on *content filter*, *claim check* and *content enricher* message transformation methods between services using an example scenario.
 
-> This guide describes implementing three message trasformation patterns using Ballerina programming language as simple steps.
+> This guide describes implementing three message transformation patterns using Ballerina programming language as simple steps.
 
 The following are the sections available in this guide.
 
@@ -17,33 +17,33 @@ When it comes to the data communication, the major challenge is formats of stora
 
 ![alt text](images/messagetrasformation.png)
 
-Also the message producers and consumers uses different techniques according to their requirement. So message transformation play important role to coupling those message producers and the message consumers. 
-Not only that, the performance impact while message transformation is also important fact in the real world. Here we discuss about main three message transformation patterns in Enterprise Integration as content filter, content enricher and claim check.
+Also, the message producers and consumers use different techniques according to their requirement. So message transformation plays an important role in coupling those message producers and the message consumers. 
+Not only that, the performance impact while message transformation is also an important fact in the real world. Here we discuss main three message transformation patterns in Enterprise Integration as content filter, content enricher, and claim check.
 
 ### Content filter
-The content filter EIP (Enterprise Integration Pattern) important when we need to manage large message in order to get few data from it. It removes unimportant data items from a message and leaves only the important ones. In addition to removing data elements, Content Filter can be used to simplify a message structure.
+The content filter EIP (Enterprise Integration Pattern) important when we need to manage a large message in order to get a few data from it. It removes unimportant data items from a message and leaves only the important ones. In addition to removing data elements, Content Filter can be used to simplify a message structure.
 
 ![alt text](images/contentfilter.png)
 
-In our sample scenario, input request contains lot of student's details. So content filter uses to simplify the input request such as request contains only student ID. Additional data such as student name, student's city and gender will be dropped to ensure the perfomance of messsage transformation.
+In our sample scenario, input request contains a lot of student's details. So content filter uses to simplify the input request such as request contains only student ID. Additional data such as student name, student's city, and gender will be dropped to ensure the performance of message transformation.
 
-### Content enricher
+### Content Enricher
 The Content Enricher EIP facilitates communication with another system if the message originator does not have all the required data items available. It accesses an external data source to augment a message with missing information.
 
 ![alt text](images/content_enricher.png)
 
-Content enricher EIP uses to enrich the requst data, in our example it is used to enrich the student's details. We used two databases as student's results details and student's personal details. Using student's ID, it maps the details which belogs to a particular student from the tables and send those to the enricher. Then enricher added particular data to the request.
+Content enricher EIP uses to enrich the request data, in our example, it is used to enrich the student's details. We used two databases as student's results details and student's personal details. Using student's ID, it maps the details which belong to a particular student from the tables and send those to the enricher. Then enricher added particular data to the request.
 
 ### Claim check
-The Claim Check EIP reduces the data volume of messages sent across a system without sacrificing information content. It stores the entire message at the initial stage of a sequence of processing steps, and it extracts only the parts required by the following steps. Once processing is completed, it retrieves the stored message and performs any operations. This pattern ensures better performance, since large chunks of unwanted data are reduced to lightweight bits before being processed.
+The Claim Check EIP reduces the data volume of messages sent across a system without sacrificing information content. It stores the entire message at the initial stage of a sequence of processing steps, and it extracts only the parts required by the following steps. Once processing is completed, it retrieves the stored message and performs any operations. This pattern ensures better performance since large chunks of unwanted data is reduced to lightweight bits before being processed.
 
 ![alt text](images/claim_check.png)
 
-The ultimate goal of the claim check EIP in our scenario is to validate the student's ID. Check luggage used to send unwanted data which not uses in validation process, to ths student's detail database. After the validation of student's ID, the original data will addded to the request again.
+The ultimate goal of the claim check EIP in our scenario is to validate the student's ID. Check luggage used to send unwanted data which not uses invalidation process, to the student's detail database. After the validation of the student's ID, the original data will add to the request again.
 
 ### Sample scenario
-The sample scenario used to demonstrate the above three EI Patterens. Student send a request with content student ID, student name, Student's city and gender. Then ‘content filter’ filters the student name, student's city and gender from the request and added them to a students details database. Filtered request contains only the student ID. Then filtered request goes to the 'Student ID validator'. It validates the incomming request and send the validated request. Then validated request goes to the 'content enricher'. Content enricer uses used two databases as student's results details and student's personal details.
-Using student's ID, it maps the details which belogs to a particular student from the tables and added particular data to the request. While addding the enriching data, it process the data using json to json transformation. The output request of the scenario contains student ID, student name, Student's city, gender and student's results details.
+The sample scenario used to demonstrate the above three EI Patterns. Student sends a request with content student ID, student name, Student's city and gender. Then ‘content filter’ filters the student name, student's city and gender from the request and added them to a students details database. The filtered request contains only the student ID. Then filtered request goes to the 'Student ID validator'. It validates the incoming request and sends the validated request. Then validated request goes to the 'content enricher'. Content enricher uses used two databases as student's results details and student's personal details.
+Using student's ID, it maps the details which belong to a particular student from the tables and added particular data to the request. While adding the enriching data, it processes the data using JSON to JSON transformation. The output request of the scenario contains student ID, student name, Student's city, gender and student's results details.
 
 
 
@@ -83,7 +83,7 @@ Open the terminal and navigate to `message-transformation---ballerina/guide` and
 ### Developing the SQL data
 
 Ballerina language has built-in support for writing web services. The `service` keyword in Ballerina simply defines a web service. Inside the service block, we can have all the required resources. You can define a resource inside the service. You can implement the business logic inside a resource using Ballerina language syntax.
-We can use the following databases schema to store student's data and student's results data.
+We can use the schema of the following database to store the student's data and student's results data.
 
 tsetdb database used to store student's data in student table as below.
 ``` 
@@ -108,7 +108,7 @@ tsetdb1 database used to store student's results data in StudentDetails table as
 | Chemistry | varchar(1) | YES  |     | NULL    |       |
 +-----------+------------+------+-----+---------+-------+
 ```
-In the below service. it added student's data through the request. But student's results data must be located in the database as below.
+In the below service. it added the student's data through the request. But student's results data must be located in the database as below.
 ```
 +-----+-----------+---------+-----------+
 | ID  | Com_Maths | Physics | Chemistry |
@@ -127,7 +127,7 @@ In the below service. it added student's data through the request. But student's
 
 ### Developing the service
 
-To implement the scenario, let's start by implementing the message_transformation.bal file, which is the main file in the implementation. This file includes 4 main services as contentfilter, validator, enricher and backend. Refer to the code attached below. Inline comments are added for better understanding.
+To implement the scenario, let's start by implementing the message_transformation.bal file, which is the main file in the implementation. This file includes 4 main services as contentfilter, validator, enricher, and backend. Refer to the code attached below. Inline comments are added for better understanding.
 
 > In the below service you have to change below configurations according to your mysql configuration details, 
 >```
@@ -495,7 +495,7 @@ Send a request to the contentfilter service.
 ```
 #### Output
 
-The request goes through the contentfilter service and forward it to validator service. Then validater validates the data and forward it to enricher service. The enricher service enrich the requset data and forward it to backend service. The backend service returns the request content as below to the contentfilter service.
+The request goes through the contentfilter service and forwards it to validator service. Then validator validates the data and forward it to enricher service. The enricher service enriches the request data and forwards it to backend service. The backend service returns the requested content as below to the contentfilter service.
 
 ```bash
 *   Trying 127.0.0.1...
@@ -563,9 +563,9 @@ The successful execution of a service will show us something similar to the foll
 
 ### Deploying on Docker
 
-You can run the service that we developed above as a docker container. As Ballerina platform includes [Ballerina_Docker_Extension](https://github.com/ballerinax/docker), which offers native support for running ballerina programs on containers, you just need to put the corresponding docker annotations on your service code. Since this guide requires MySQL as a prerequisite, you need a couple of more steps to configure MySQL in docker container.   
+You can run the service that we developed above as a Docker container. As Ballerina platform includes [Ballerina_Docker_Extension](https://github.com/ballerinax/docker), which offers native support for running ballerina programs on containers, you just need to put the corresponding docker annotations on your service code. Since this guide requires MySQL as a prerequisite, you need a couple of more steps to configure MySQL in the docker container.   
 
-First let's see how to configure MySQL in docker container.
+First, let's see how to configure MySQL in the docker container.
 
   * Initially, you need to pull the MySQL docker image using the below command.
 ```
@@ -684,7 +684,7 @@ service<http:Service> backend bind backendEP {
 }
 ```
 
- - `@docker:Config` annotation is used to provide the basic docker image configurations for the sample. `@docker:CopyFiles` is used to copy the MySQL jar file into the ballerina bre/lib folder. Make sure to replace the `<path_to_JDBC_jar>` with your JDBC jar's path. `@docker:Expose {}` is used to expose the port. Finally you need to change the host field in the  `mysql:Client` endpoint definition to the IP address of the MySQL container. You can obtain this IP address using the below command.
+ - `@docker:Config` annotation is used to provide the basic docker image configurations for the sample. `@docker:CopyFiles` is used to copy the MySQL jar file into the ballerina bre/lib folder. Make sure to replace the `<path_to_JDBC_jar>` with your JDBC jar's path. `@docker:Expose {}` is used to expose the port. Finally, you need to change the host field in the  `mysql:Client` endpoint definition to the IP address of the MySQL container. You can obtain this IP address using the below command.
 
 ```
    $docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <Container_ID>
@@ -703,7 +703,7 @@ Generating executable
     ./target/message_transformation.balx
         @docker                  - complete 3/3 
 
-        Run following command to start docker container:
+        Run the following command to start docker container:
         docker run -d -p 9090:9090 ballerina.guides.io/message_transformation:v1.0
 ```
 
@@ -725,11 +725,11 @@ curl -v http://localhost:9090/contentfilter -d '{"id" : 105, "name" : "ballerina
 
 ### Deploying on Kubernetes
 
-- You can run the service that we developed above, on Kubernetes. The Ballerina language offers native support for running a ballerina programs on Kubernetes, with the use of Kubernetes annotations that you can include as part of your service code. Also, it will take care of the creation of the docker images. So you don't need to explicitly create docker images prior to deploying it on Kubernetes. Refer to [Ballerina_Kubernetes_Extension](https://github.com/ballerinax/kubernetes) for more details and samples on Kubernetes deployment with Ballerina. You can also find details on using Minikube to deploy Ballerina programs. 
+- You can run the service that we developed above, on Kubernetes. The Ballerina language offers native support for running a ballerina program on Kubernetes, with the use of Kubernetes annotations that you can include as part of your service code. Also, it will take care of the creation of the docker images. So you don't need to explicitly create docker images prior to deploying it on Kubernetes. Refer to [Ballerina_Kubernetes_Extension](https://github.com/ballerinax/kubernetes) for more details and samples on Kubernetes deployment with Ballerina. You can also find details on using Minikube to deploy Ballerina programs. 
 
 Since this guide requires MySQL as a prerequisite, you need a couple of more steps to create a MySQL pod and use it with our sample.  
 
-First let's look at how we can create a MySQL pod in kubernetes. If you are working with minikube, it will be convenient to use the minikube's in-built docker daemon and push the mysql docker image we are about to build to the minikube's docker registry. This is because during the next steps, in the case of minikube, the docker image we build for employee_database_service will also be pushed to minikube's docker registry. Having both images in the same registry, will reduce the configuration steps.
+First, let's look at how we can create a MySQL pod in kubernetes. If you are working with minikube, it will be convenient to use the minikube's in-built docker daemon and push the MySQL docker image we are about to build to the minikube's docker registry. This is because during the next steps, in the case of minikube, the docker image we build for employee_database_service will also be pushed to minikube's docker registry. Having both images in the same registry will reduce the configuration steps.
 Run the following command to start using minikube's in-built docker daemon.
 
 ```bash
@@ -872,7 +872,7 @@ eg:
 ```
 
 - We have also specified `` @kubernetes:Service `` so that it will create a Kubernetes service which will expose the Ballerina service that is running on a Pod.  
-- In addition we have used `` @kubernetes:Ingress `` which is the external interface to access your service (with path `` /`` and host name ``ballerina.guides.io``)
+- In addition, we have used `` @kubernetes:Ingress `` which is the external interface to access your service (with path `` /`` and hostname ``ballerina.guides.io``)
 
 - Now you can build a Ballerina executable archive (.balx) of the service that we developed above, using the following command. It points to the service file that we developed above and it will create an executable binary out of that. 
 This will also create the corresponding docker image and the Kubernetes artifacts using the Kubernetes annotations that you have configured above.
@@ -1086,8 +1086,8 @@ input {
 filter {  
  grok{  
      match => { 
-	 "message" => "%{TIMESTAMP_ISO8601:date}%{SPACE}%{WORD:logLevel}%{SPACE}
-	 \[%{GREEDYDATA:package}\]%{SPACE}\-%{SPACE}%{GREEDYDATA:logMessage}"
+     "message" => "%{TIMESTAMP_ISO8601:date}%{SPACE}%{WORD:logLevel}%{SPACE}
+     \[%{GREEDYDATA:package}\]%{SPACE}\-%{SPACE}%{GREEDYDATA:logMessage}"
      }  
  }  
 }   
