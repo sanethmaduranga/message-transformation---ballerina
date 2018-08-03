@@ -80,10 +80,56 @@ Open the terminal and navigate to `message-transformation---ballerina/guide` and
 ```bash
    $ ballerina init
 ```
+### Developing the SQL data
+
+Ballerina language has built-in support for writing web services. The `service` keyword in Ballerina simply defines a web service. Inside the service block, we can have all the required resources. You can define a resource inside the service. You can implement the business logic inside a resource using Ballerina language syntax.
+We can use the following databases schema to store student's data and student's results data.
+
+tsetdb database used to store student's data in student table as below.
+``` 
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| id      | int(11)      | NO   | PRI | NULL    |       |
+| name    | varchar(255) | YES  |     | NULL    |       |
+| address | varchar(255) | YES  |     | NULL    |       |
+| gender  | varchar(255) | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+```
+tsetdb1 database used to store student's results data in StudentDetails table as below.
+
+``` 
++-----------+------------+------+-----+---------+-------+
+| Field     | Type       | Null | Key | Default | Extra |
++-----------+------------+------+-----+---------+-------+
+| ID        | int(11)    | NO   | PRI | NULL    |       |
+| Com_Maths | varchar(1) | YES  |     | NULL    |       |
+| Physics   | varchar(1) | YES  |     | NULL    |       |
+| Chemistry | varchar(1) | YES  |     | NULL    |       |
++-----------+------------+------+-----+---------+-------+
+```
+In the below service. it added student's data through the request. But student's results data must be located in the database as below.
+```
++-----+-----------+---------+-----------+
+| ID  | Com_Maths | Physics | Chemistry |
++-----+-----------+---------+-----------+
+| 100 | A         | A       | A         |
+| 101 | A         | A       | B         |
+| 102 | A         | A       | C         |
+| 103 | A         | B       | A         |
+| 104 | A         | B       | B         |
+| 105 | A         | B       | C         |
+| 106 | A         | C       | A         |
+| 107 | A         | C       | B         |
+| 108 | A         | C       | C         |
++-----+-----------+---------+-----------+
+```
 
 ### Developing the service
 
 To implement the scenario, let's start by implementing the message_transformation.bal file, which is the main file in the implementation. This file includes 4 main services as contentfilter, validator, enricher and backend. Refer to the code attached below. Inline comments are added for better understanding.
+
+> In the below service, mysql username is used as "root" and password is used as "wso2123".
 
 ##### passthrough.bal
 
