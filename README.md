@@ -466,4 +466,61 @@ function handleUpdate(int|error returned, string message) {
 ``` 
 NOTE : You can find the SQL script(`initialize.sql`) [here](resources/initialize.sql)
 
+### Invoking the service
 
+Navigate to `message_transformation` and run the following command in the command line to start `message_transformation.bal`.
+
+```bash
+   $ ballerina run message_transformation.bal
+```
+   
+Send a request to the contentfilter service.
+
+```bash
+
+ $ curl -v http://localhost:9090/contentfilter -d '{"id" : 105, "name" : "ballerinauser", "city" : "Colombo 03", "gender" : "male"}' -H "Content-Type:application/json" -X POST
+
+```
+#### Output
+
+The request goes through the contentfilter service and forward it to validator service. Then validater validates the data and forward it to enricher service. The enricher service enrich the requset data and forward it to backend service. The backend service returns the request content as below to the contentfilter service.
+
+```bash
+*   Trying 127.0.0.1...
+* Connected to localhost (127.0.0.1) port 9090 (#0)
+> POST /contentfilter HTTP/1.1
+> Host: localhost:9090
+> User-Agent: curl/7.47.0
+> Accept: */*
+> Content-Type:application/json
+> Content-Length: 80
+> 
+* upload completely sent off: 80 out of 80 bytes
+< HTTP/1.1 200 OK
+< content-type: application/json
+< date: Fri, 3 Aug 2018 07:56:28 +0530
+< server: ballerina/0.980.1
+< content-length: 128
+< 
+* Connection #0 to host localhost left intact
+{"id":105,"city":"Colombo 03","gender":"male","fname":"ballerinauser","results":{"Com_Maths":"A","Physics":"B","Chemistry":"C"}}
+```
+### Writing unit tests 
+
+In Ballerina, the unit test cases should be in the same package inside a folder named as 'tests'.  When writing the test functions, the below convention should be followed.
+
+Test functions should be annotated with `@test:Config`. See the below example.
+
+```ballerina
+   @test:Config
+   function testFunc() {
+   }
+```
+
+This guide contains unit test case for contentfilter service in [message_transformation_test.bal](https://github.com/sanethmaduranga/Simple-pass-through-messaging-ballerina-/blob/master/guide/tests/passthrough_test.bal) file.
+
+To run the unit tests, navigate to `message-transformation---ballerina/guide` and run the following command. 
+
+```bash
+   $ ballerina test
+```
