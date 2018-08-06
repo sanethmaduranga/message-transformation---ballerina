@@ -293,6 +293,8 @@ service<http:Service> enricher bind contentenricherEP {
                     error e => io:println("Error in StudentDetails table to json conversion");
                 }
                 testDB.stop();
+                
+                io:println(payload1[0]);
 
                 //JSON to JSON conversion to the selected details
                 //define new jason variable
