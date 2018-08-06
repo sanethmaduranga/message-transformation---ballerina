@@ -16,7 +16,7 @@ services:
   - mysql
 
 before_script:
-- mysql -u root --password="wso2123"  < ./resources/Initialize.sql
+- mysql -u root --password="root"  < ./resources/Initialize.sql
 
 script:
 - BALLERINA_VERSION="${VERSION:-0.980.2-SNAPSHOT}"
