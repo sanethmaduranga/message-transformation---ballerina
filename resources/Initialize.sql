@@ -10,7 +10,7 @@ CREATE DATABASE IF NOT EXISTS testdb;
 USE testdb;
 
 -- create student table and StudentDetails table in the database
-CREATE TABLE IF NOT EXISTS student (id INT, name VARCHAR(255), address VARCHAR(255), gender VARCHAR(255), PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS student (id INT, name VARCHAR(255), city VARCHAR(255), gender VARCHAR(255), PRIMARY KEY (id));
 
 
 
