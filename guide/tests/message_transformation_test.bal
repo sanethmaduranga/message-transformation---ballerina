@@ -22,7 +22,7 @@ function message_transformation_check() {
     // Chck whether the server is started
     test:assertTrue(serviceStarted, msg = "Unable to start the service");
     json payload = {"id" : 105, "name" : "saneth", "city" : "Colombo 03", "gender" : "male"};
-    json response1 = {"id":105,"city":"Colombo 03","gender":"male","fname":"saneth","results":{"Com_Maths":"A","Physics":"B","Chemistry":"C"}};
+    json response1 = [{"id":105,"city":"Colombo 03","gender":"male","fname":"saneth","results":{"Com_Maths":"A","Physics":"B","Chemistry":"C"}}];
 
     http:Request req = new;
     req.setJsonPayload(payload);
