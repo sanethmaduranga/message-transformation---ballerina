@@ -268,6 +268,7 @@ service<http:Service> enricher bind contentenricherEP {
                     json jsonRes => {
                         //set student's details to the global variable
                         payload1= untaint jsonRes;
+                        io:println(payload1);
                     }
                     error e => io:println("Error in student table to json conversion");
                 }
