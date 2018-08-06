@@ -302,7 +302,7 @@ service<http:Service> enricher bind contentenricherEP {
                 //remove values from the jason payload
                 pay.remove("name");
                 //add results to the same payload
-                pay.results = payload2;
+                pay.results = payload2[0];
                 //set enriched payload to the request
                 enrichedreq.setJsonPayload(pay);
             }
