@@ -296,13 +296,13 @@ service<http:Service> enricher bind contentenricherEP {
 
                 //JSON to JSON conversion to the selected details
                 //define new jason variable
-                json pay = payload1[0];
+                json pay = payload1;
                 //add extra values to the jason payload
                 pay.fname = pay.name;
                 //remove values from the jason payload
                 pay.remove("name");
                 //add results to the same payload
-                pay.results = payload2[0];
+                pay.results = payload2;
                 //set enriched payload to the request
                 enrichedreq.setJsonPayload(pay);
             }
