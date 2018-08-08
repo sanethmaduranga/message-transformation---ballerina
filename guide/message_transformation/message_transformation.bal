@@ -347,11 +347,6 @@ service<http:Service> backend bind backendEP {
                 //send payload as response
                 http:Response res = new;
                 res.setJsonPayload(untaint msg);
-
-                //res.setPayload("Your details will result as log message......");
-                //io:println("Your request payload is below");
-                //io:println(untaint msg);
-
                 caller->respond(res) but { error e =>
                 log:printError("Error sending response", err = e) };
             }
