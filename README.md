@@ -87,7 +87,7 @@ Open the terminal and navigate to `message-transformation---ballerina/guide` and
 Ballerina language has built-in support for writing web services. The `service` keyword in Ballerina simply defines a web service. Inside the service block, we can have all the required resources. You can define a resource inside the service. You can implement the business logic inside a resource using Ballerina language syntax.
 We can use the schema of the following database to store the student's data and student's results data.
 
-tsetdb database used to store student's data in student table as below.
+The StudentDetailsDB database is used to store the student's data in the StudentDetails table as shown below
 ``` 
 +---------+--------------+------+-----+---------+-------+
 | Field   | Type         | Null | Key | Default | Extra |
@@ -98,7 +98,7 @@ tsetdb database used to store student's data in student table as below.
 | gender  | varchar(255) | YES  |     | NULL    |       |
 +---------+--------------+------+-----+---------+-------+
 ```
-tsetdb1 database used to store student's results data in StudentDetails table as below.
+The  StudentResultsDB database is used to store the student's results data in the StudentResults as shown below
 
 ``` 
 +-----------+------------+------+-----+---------+-------+
@@ -110,7 +110,7 @@ tsetdb1 database used to store student's results data in StudentDetails table as
 | Chemistry | varchar(1) | YES  |     | NULL    |       |
 +-----------+------------+------+-----+---------+-------+
 ```
-In the below service. it added the student's data through the request. But student's results data must be located in the database as below.
+The student's data is added through the request in the following service. However, the student's result data must be located in the database as shown below.
 ```
 +-----+-----------+---------+-----------+
 | ID  | Com_Maths | Physics | Chemistry |
@@ -905,7 +905,7 @@ This will also create the corresponding docker image and the Kubernetes artifact
 
 ```
 
-- You can verify Kubernetes deployment, service and ingress are running properly, by using following Kubernetes commands. 
+- You can verify if Kubernetes deployment, service and ingress are running properly by using following Kubernetes commands. 
 
 ```
    $kubectl get service
@@ -937,7 +937,7 @@ Access the service
 ```
 ## Observability 
 Ballerina is by default observable. Meaning you can easily observe your services, resources, etc. Refer to [how-to-observe-ballerina-code](https://ballerina.io/learn/how-to-observe-ballerina-code/) for more information.
-However, observability is disabled by default via configuration. Observability can be enabled by adding following configurations to `ballerina.conf` file and starting the ballerina service using it.
+However, observability is disabled by default via configuration. Observability can be enabled by adding the following configurations to `ballerina.conf` file and then the ballerina service will start to use it.
 
 ```ballerina
 [b7a.observability]
