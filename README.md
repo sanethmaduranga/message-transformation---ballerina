@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/sanethmaduranga/message-transformation---ballerina.svg?branch=master)](https://travis-ci.org/sanethmaduranga/message-transformation---ballerina.svg?branch=master)
 
 # message-transformation---ballerina
-There are different ways of message transformation methods in EIP (Enterprise Integration Patterns). In this guide, we are focusing on *content filter*, *claim check* and *content enricher* message transformation methods between services using an example scenario.
+There are different ways of message transformation methods in EIP (Enterprise Integration Patterns). In this guide, we are focusing on 'content filter', 'claim check' and 'content enricher' message transformation methods between services using an example scenario.
 
 > This guide describes implementing three message transformation patterns using Ballerina programming language as simple steps.
 
