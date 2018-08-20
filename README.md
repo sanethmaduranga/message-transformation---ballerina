@@ -20,7 +20,7 @@ When it comes to the data communication, the major challenge is formats of stora
 ![alt text](images/messagetrasformation.png)
 
 Also, the message producers and consumers use different techniques according to their requirement. So message transformation plays an important role in coupling those message producers and the message consumers. 
-Not only that, the performance impact while message transformation is also an important fact in the real world. Here we discuss main three message transformation patterns in Enterprise Integration as content filter, content enricher, and claim check.
+Additionally,  the performance impact while message transformation is also an important fact in the real world. Here we discuss main three message transformation patterns in Integration as content filter, content enricher, and claim check.
 
 ### Content filter
 The content filter EIP (Enterprise Integration Pattern) important when we need to manage a large message in order to get a few data from it. It removes unimportant data items from a message and leaves only the important ones. In addition to removing data elements, Content Filter can be used to simplify a message structure.
@@ -874,7 +874,7 @@ eg:
 ```
 
 - We have also specified `` @kubernetes:Service `` so that it will create a Kubernetes service which will expose the Ballerina service that is running on a Pod.  
-- In addition, we have used `` @kubernetes:Ingress `` which is the external interface to access your service (with path `` /`` and hostname ``ballerina.guides.io``)
+- In addition, we have used `` @kubernetes:Ingress `` which is the external interface to access your service (with path `` /`` and hostname ``ballerina.guides.io``).
 
 - Now you can build a Ballerina executable archive (.balx) of the service that we developed above, using the following command. It points to the service file that we developed above and it will create an executable binary out of that. 
 This will also create the corresponding docker image and the Kubernetes artifacts using the Kubernetes annotations that you have configured above.
@@ -983,7 +983,7 @@ Run the Jaeger Docker image using the following command.
    -p16686:16686 -p14268:14268 jaegertracing/all-in-one:latest
 ```
 
-Navigate to `message-transformation---ballerina/guide` and run the `message_transformation` using following command 
+Navigate to `message-transformation---ballerina/guide` and run the `message_transformation` using following command.
 
 ```
    $ ballerina run message_transformation/
@@ -1043,14 +1043,14 @@ You can access Prometheus at the following URL.
    http://localhost:19090/
 ```
 
-> **NOTE**: Ballerina will by default have the following metrics for HTTP server connector. You can enter the following expression in Prometheus UI.
+> **NOTE**: By default, Ballerina has the following metrics for HTTP server connector. You can enter the following expression in Prometheus UI.
 >    -  http_requests_total
 >    -  http_response_time
 
 ### Logging
-Ballerina has a log package for logging to the console. You can import `ballerina/log` package and start logging. The following section describes how to search, analyze, and visualize logs in real time using Elastic Stack.
+Ballerina has a log package for logging into the console. You can import `ballerina/log` package and start logging. The following section describes how to search, analyze, and visualize logs in real time using Elastic Stack.
 
-Start the Ballerina service with the following command from `message-transformation---ballerina/guide`
+Start the Ballerina service with the following command from `message-transformation---ballerina/guide`.
 
 ```
    $ nohup ballerina run message_transformation/ &>> ballerina.log&
@@ -1074,9 +1074,9 @@ Start Kibana plugin for data visualization with Elasticsearch.
    elasticsearch:elasticsearch docker.elastic.co/kibana/kibana:6.2.2     
 ```
 
-Configure logstash to format the Ballerina logs.
+* Configure logstash to format the Ballerina logs.
 
-i) Create a file named `logstash.conf` with the following content.
+     1. Create a file named `logstash.conf` with the following content.
 
 ```
 input {  
@@ -1103,9 +1103,9 @@ output {
 }  
 ```
 
-ii) Save the above `logstash.conf` inside a directory named as `{SAMPLE_ROOT}\pipeline`.
+   2. Save the above `logstash.conf` inside a directory named as `{SAMPLE_ROOT}\pipeline`.
      
-iii) Start the logstash container, replace the `{SAMPLE_ROOT}` with your directory name.
+   3. Start the logstash container, replace the `{SAMPLE_ROOT}` with your directory name.
      
 ```
 $ docker run -h logstash --name logstash --link elasticsearch:elasticsearch \
@@ -1113,9 +1113,9 @@ $ docker run -h logstash --name logstash --link elasticsearch:elasticsearch \
 -p 5044:5044 docker.elastic.co/logstash/logstash:6.2.2
 ```
   
-Configure filebeat to ship the Ballerina logs.
+* Configure filebeat to ship the Ballerina logs.
     
-i) Create a file named `filebeat.yml` with the following content.
+  1. Create a file named `filebeat.yml` with the following content.
 
 ```
 filebeat.prospectors:
@@ -1128,9 +1128,9 @@ output.logstash:
 
 > **NOTE**: Modify the ownership of `filebeat.yml` file using `$chmod go-w filebeat.yml`.
 
-ii) Save the above `filebeat.yml` inside a directory named as `{SAMPLE_ROOT}\filebeat`   
+  2. Save the above `filebeat.yml` inside a directory named as `{SAMPLE_ROOT}\filebeat`   
         
-iii) Start the logstash container, replace the `{SAMPLE_ROOT}` with your directory name.
+  3. Start the logstash container, replace the `{SAMPLE_ROOT}` with your directory name.
      
 ```
 $ docker run -v {SAMPLE_ROOT}/filbeat/filebeat.yml:/usr/share/filebeat/filebeat.yml \
