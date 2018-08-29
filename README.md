@@ -87,7 +87,7 @@ Open the terminal and navigate to `message-transformation---ballerina/guide` and
 Ballerina language has built-in support for writing web services. The `service` keyword in Ballerina simply defines a web service. Inside the service block, we can have all the required resources. You can define a resource inside the service. You can implement the business logic inside a resource using Ballerina language syntax.
 We can use the schema of the following database to store the student's data and student's results data.
 
-The StudentDetailsDB database is used to store the student's data in the StudentDetails table as shown below
+The StudentDetailsDB database is used to store the student's data in the StudentDetails table as shown below,
 ``` 
 +---------+--------------+------+-----+---------+-------+
 | Field   | Type         | Null | Key | Default | Extra |
@@ -98,7 +98,7 @@ The StudentDetailsDB database is used to store the student's data in the Student
 | gender  | varchar(255) | YES  |     | NULL    |       |
 +---------+--------------+------+-----+---------+-------+
 ```
-The  StudentResultsDB database is used to store the student's results data in the StudentResults as shown below
+The  StudentResultsDB database is used to store the student's results data in the StudentResults as shown below,
 
 ``` 
 +-----------+------------+------+-----+---------+-------+
@@ -131,7 +131,7 @@ The student's data is added through the request in the following service. Howeve
 
 To implement the scenario, let's start by implementing the message_transformation.bal file, which is the main file in the implementation. This file includes 4 main services as contentfilter, validator, enricher, and backend. Refer to the code attached below. Inline comments are added for better understanding.
 
-> In the below service you have to change below configurations according to your mysql configuration details, 
+> In the below service you have to change below configurations according to your MySQL configuration details, 
 >```
 >   host: "localhost",
 >   port: 3306,
@@ -565,7 +565,7 @@ The successful execution of a service will show us something similar to the foll
 
 ### Deploying on Docker
 
-You can run the service that we developed above as a Docker container. As Ballerina platform includes [Ballerina_Docker_Extension](https://github.com/ballerinax/docker), which offers native support for running ballerina programs on containers, you just need to put the corresponding docker annotations on your service code. Since this guide requires MySQL as a prerequisite, you need a couple of more steps to configure MySQL in the docker container.   
+You can run the service that we developed above as a Docker container. As Ballerina platform includes [Ballerina_Docker_Extension](https://github.com/ballerinax/docker), which offers native support for running Ballerina programs on containers, you just need to put the corresponding docker annotations on your service code. Since this guide requires MySQL as a prerequisite, you need a couple of more steps to configure MySQL in the docker container.   
 
 First, let's see how to configure MySQL in the docker container.
 
@@ -686,7 +686,7 @@ service<http:Service> backend bind backendEP {
 }
 ```
 
- - `@docker:Config` annotation is used to provide the basic docker image configurations for the sample. `@docker:CopyFiles` is used to copy the MySQL jar file into the ballerina bre/lib folder. Make sure to replace the `<path_to_JDBC_jar>` with your JDBC jar's path. `@docker:Expose {}` is used to expose the port. Finally, you need to change the host field in the  `mysql:Client` endpoint definition to the IP address of the MySQL container. You can obtain this IP address using the below command.
+ - `@docker:Config` annotation is used to provide the basic docker image configurations for the sample. `@docker:CopyFiles` is used to copy the MySQL jar file into the Ballerina bre/lib folder. Make sure to replace the `<path_to_JDBC_jar>` with your JDBC jar's path. `@docker:Expose {}` is used to expose the port. Finally, you need to change the host field in the  `mysql:Client` endpoint definition to the IP address of the MySQL container. You can obtain this IP address using the below command.
 
 ```
    $docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <Container_ID>
@@ -727,7 +727,7 @@ curl -v http://localhost:9090/contentfilter -d '{"id" : 105, "name" : "ballerina
 
 ### Deploying on Kubernetes
 
-- You can run the service that we developed above, on Kubernetes. The Ballerina language offers native support for running a ballerina program on Kubernetes, with the use of Kubernetes annotations that you can include as part of your service code. Also, it will take care of the creation of the docker images. So you don't need to explicitly create docker images prior to deploying it on Kubernetes. Refer to [Ballerina_Kubernetes_Extension](https://github.com/ballerinax/kubernetes) for more details and samples on Kubernetes deployment with Ballerina. You can also find details on using Minikube to deploy Ballerina programs. 
+- You can run the service that we developed above, on Kubernetes. The Ballerina language offers native support for running a Ballerina program on Kubernetes, with the use of Kubernetes annotations that you can include as part of your service code. Also, it will take care of the creation of the docker images. So you don't need to explicitly create docker images prior to deploying it on Kubernetes. Refer to [Ballerina_Kubernetes_Extension](https://github.com/ballerinax/kubernetes) for more details and samples on Kubernetes deployment with Ballerina. You can also find details on using Minikube to deploy Ballerina programs. 
 
 Since this guide requires MySQL as a prerequisite, you need a couple of more steps to create a MySQL pod and use it with our sample.  
 
@@ -937,7 +937,7 @@ Access the service
 ```
 ## Observability 
 Ballerina is by default observable. Meaning you can easily observe your services, resources, etc. Refer to [how-to-observe-ballerina-code](https://ballerina.io/learn/how-to-observe-ballerina-code/) for more information.
-However, observability is disabled by default via configuration. Observability can be enabled by adding the following configurations to `ballerina.conf` file and then the ballerina service will start to use it.
+However, observability is disabled by default via configuration. Observability can be enabled by adding the following configurations to `ballerina.conf` file and then the Ballerina service will start to use it.
 
 ```ballerina
 [b7a.observability]
@@ -996,7 +996,7 @@ Observe the tracing using Jaeger UI using the following URL.
 ```
 
 ### Metrics
-Metrics and alerts are built-in with ballerina. We will use Prometheus as the monitoring tool. Follow the steps below to set up Prometheus and view metrics for 'passthrough'.
+Metrics and alerts are built-in with Ballerina. We will use Prometheus as the monitoring tool. Follow the steps below to set up Prometheus and view metrics for 'passthrough'.
 
 You can add the following configurations for metrics. Note that these configurations are optional if you already have the basic configuration in `ballerina.conf` as described under the `Observability` section.
 
